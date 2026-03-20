@@ -1,6 +1,6 @@
 # 🌐 Web Summarizer AI
 
-A local LLM-powered pipeline that scrapes a website, processes the content, and returns a clean structured summary — running entirely on your own machine via Ollama.
+A pipeline that scrapes a website, processes the content, and returns a clean structured summary — powered by Groq's ultra-fast inference API.
 
 ---
 
@@ -48,6 +48,8 @@ Print final output
 
 **Smart scraping** — BeautifulSoup strips not just `<script>` and `<style>` tags but also `<nav>`, `<footer>`, and `<header>` elements. This prevents the LLM from summarizing navigation menus, reference lists, and external link sections as if they were real content.
 
+**Groq inference** — Switched from local Ollama to Groq's API for dramatically faster inference. The same llama model that took 30–60 seconds locally runs in under 3 seconds on Groq.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -55,24 +57,26 @@ Print final output
 | Tool | Purpose |
 |---|---|
 | Python | Core language |
-| Ollama + llama3.2 | Local LLM inference |
-| OpenAI SDK | API client (pointed at Ollama) |
+| Groq API + llama-3.3-70b | LLM inference |
+| OpenAI SDK | API client (pointed at Groq) |
 | BeautifulSoup4 | HTML parsing and cleaning |
 | ThreadPoolExecutor | Parallel LLM calls |
+| python-dotenv | Load API key from .env |
 | hashlib + os | File-based caching |
 
 ---
 
 ## ▶️ Setup
 
-Make sure you have [Ollama](https://ollama.com) installed and running with llama3.2 pulled:
+**1. Get a free Groq API key** at [console.groq.com](https://console.groq.com)
 
-```bash
-ollama pull llama3.2
-ollama serve
+**2. Create a `.env` file** in the project root:
+
+```
+GROQ_API_KEY=your_api_key_here
 ```
 
-Then install dependencies:
+**3. Install dependencies:**
 
 ```bash
 uv venv
@@ -126,6 +130,7 @@ It encompasses many paradigms and has broad applications across industry and res
 - Caching strategies to avoid redundant LLM calls
 - Prompt engineering for structured, consistent output
 - Cleaning noisy web data before it reaches the model
+- Securing API keys with .env and .gitignore
 
 ---
 
@@ -141,9 +146,9 @@ It encompasses many paradigms and has broad applications across industry and res
 
 ## 📌 Notes
 
-- This project runs fully locally — no OpenAI API key needed
-- The OpenAI SDK is used purely as a client pointed at Ollama's OpenAI-compatible endpoint
-- Caching is URL-based; delete the `cache/` folder to force a fresh fetch
+- Never commit your `.env` file — it is listed in `.gitignore`
+- Delete the `cache/` folder to force a fresh fetch on any URL
+- Groq's free tier is generous enough for all learning and portfolio projects
 
 ---
 
