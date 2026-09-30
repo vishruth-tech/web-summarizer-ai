@@ -10,10 +10,14 @@ load_dotenv()
 # -----------------------------
 # CONFIG
 # -----------------------------
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 BASE_URL = "https://api.groq.com/openai/v1"
- 
-client = OpenAI(base_url=BASE_URL, api_key=os.getenv("GROQ_API_KEY"))
+
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("GROQ_API_KEY environment variable is not set. Please add it to your .env file.")
+
+client = OpenAI(base_url=BASE_URL, api_key=api_key)
  
 CACHE_DIR = "cache"
 os.makedirs(CACHE_DIR, exist_ok=True)
@@ -166,7 +170,7 @@ def summarize_website(url):
  
     # Step 3: Clean + limit
     print("🧹 Cleaning content...")
-    text = clean_text(text)[:4000]
+    text = clean_text(text)[:20000]
  
     # Step 4: Chunk
     print("✂️ Splitting into chunks...")

@@ -57,7 +57,7 @@ Print final output
 | Tool | Purpose |
 |---|---|
 | Python | Core language |
-| Groq API + llama-3.3-70b | LLM inference |
+| Groq API (`openai/gpt-oss-120b`) | LLM inference |
 | OpenAI SDK | API client (pointed at Groq) |
 | BeautifulSoup4 | HTML parsing and cleaning |
 | ThreadPoolExecutor | Parallel LLM calls |
